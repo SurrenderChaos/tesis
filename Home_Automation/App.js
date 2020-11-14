@@ -7,6 +7,7 @@ export default function App() {
     <View style={styles.container}>
       <Text>cambio de prueba windows</Text>
       <Text>cambio de prueba</Text>
+      <Text>un tercer cambio en linux</Text>
       <StatusBar style="auto" />
     </View>
   );
