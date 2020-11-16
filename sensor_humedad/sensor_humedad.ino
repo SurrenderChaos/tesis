@@ -1,9 +1,10 @@
 #include <ESP8266WiFi.h>
+#include <DHT.h>
 #include <FirebaseArduino.h>
 
 
 //Firebase settings
-#define FIREBASE_HOST "HomeAutomation.firebaseio.com"
+#define FIREBASE_HOST "homeautomation-cfe46.firebaseio.com"
 #define FIREBASE_AUTH "3NC5nc0q5uTvkTeUDZsH89urlXS4FTNi8kgQ8uLv"
 
 //Wi-Fi settings
@@ -13,14 +14,20 @@
 //Define trigger and echo digital pins
 const int trigPin = 4;
 const int echoPin = 3;
+pinMode(trigPin, OUTPUT);
 
-// The amount of time the ultrassonic wave will be travelling for
-long duration = 0;
-// Define the distance variable
-double distance = 0;
+
 
 void setup()
 {
+    // Definimos el pin digital donde se conecta el sensor
+    #define DHTPIN 2
+    // Dependiendo del tipo de sensor
+    #define DHTTYPE DHT11
+ 
+    // Inicializamos el sensor DHT11
+    DHT dht(DHTPIN, DHTTYPE);
+
 
     // Connect to Wi-Fi
     Serial.print("Wi-Fi...");
@@ -36,43 +43,34 @@ void setup()
     Serial.println(WiFi.localIP());
 
     Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
-
-    // Ultrasonic sensor, set echo as Input and trigger as Output
-    pinMode(trigPin, OUTPUT);
-    pinMode(echoPin, INPUT);
-
     Serial.begin(9600);
+    dht.begin();
 }
 
-void loop()
-{
+ 
+void loop() {
+    // Esperamos 5 segundos entre medidas
 
-    getDistance();
-    // Prints the distance value to the serial monitor
-    Serial.print("Distance: ");
-    Serial.println(distance);
-  
-    delay(500);
+    delay(5000);
+ 
+  // Leemos la humedad relativa
+  float h = dht.readHumidity();
+  // Leemos la temperatura en grados centígrados (por defecto)
+  float t = dht.readTemperature();
+  // Leemos la temperatura en grados Fahreheit
+  float f = dht.readTemperature(true);
+ 
+  // Comprobamos si ha habido algún error en la lectura
+  if (isnan(h) || isnan(t) || isnan(f)) {
+    Serial.println("Error obteniendo los datos del sensor DHT11");
+    return;
+  }
+ 
+  // Calcular el índice de calor en Fahreheit
+  float hif = dht.computeHeatIndex(f, h);
+  // Calcular el índice de calor en grados centígrados
+  float hic = dht.computeHeatIndex(t, h, false);
+  Firebase.setFloat("temperatura01", t);
 }
 
-void getDistance()
-{
-    // Clear trigPin
-    digitalWrite(trigPin, LOW);
-    delayMicroseconds(2);
 
-    // trigPin HIGH por 10ms
-    digitalWrite(trigPin, HIGH);
-    delayMicroseconds(10);
-    digitalWrite(trigPin, LOW);
-
-    //Reads echoPin, returns the travel time of the sound wave in ms
-    duration = pulseIn(echoPin, HIGH);
-
-    // Calculating the distance, in centimeters, using the formula described in the first section.
-    distance = duration * 0.034 / 2;
-  
-    // Sends the distance value to Firebase
-    Firebase.setFloat("distance", distance);
-
-}
