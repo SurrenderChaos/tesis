@@ -1,7 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <DHT.h>
 #include <FirebaseArduino.h>
-
+#include <Servo.h>
 
 //Firebase settings
 #define FIREBASE_HOST "homeautomation-cfe46.firebaseio.com"
@@ -11,11 +11,8 @@
 #define WIFI_SSID "P4nd0r424601"
 #define WIFI_PASSWORD "YHgq9mxd9R8-EAS$"
 
-//Define trigger and echo digital pins
-const int trigPin = 4;
-const int echoPin = 3;
-pinMode(trigPin, OUTPUT);
-
+int servo_pin = D7;  // for ESP8266 microcontroller
+Servo myservo;
 
 
 void setup()
@@ -24,6 +21,7 @@ void setup()
     #define DHTPIN 2
     // Dependiendo del tipo de sensor
     #define DHTTYPE DHT11
+    myservo.attach(servo_pin);
  
     // Inicializamos el sensor DHT11
     DHT dht(DHTPIN, DHTTYPE);
@@ -49,9 +47,12 @@ void setup()
 
  
 void loop() {
+
+  delay(1000);
+  Firebase.getInt("servo01");//codigo con el que se obtiene el valor del servo en firebase para moverlo 
     // Esperamos 5 segundos entre medidas
 
-    delay(5000);
+  delay(3000);
  
   // Leemos la humedad relativa
   float h = dht.readHumidity();
@@ -71,6 +72,15 @@ void loop() {
   // Calcular el índice de calor en grados centígrados
   float hic = dht.computeHeatIndex(t, h, false);
   Firebase.setFloat("temperatura01", t);
+  //codigo para abrir una ventana cuando la temperatura supera los 25 grados 
+  int angle = 0;
+  if(t >= 25){
+    angle = 90;
+    myservo.write(angle);
+  }else{
+    angle = 0;
+    myservo.write(angle);
+  }
 }
 
 
