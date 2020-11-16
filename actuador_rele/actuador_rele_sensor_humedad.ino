@@ -19,12 +19,14 @@
 
 #include <ESP8266WiFi.h>
 #include <FirebaseArduino.h>
+#define FIREBASE_HOST "homeautomation-cfe46.firebaseio.com"
+#define FIREBASE_AUTH "3NC5nc0q5uTvkTeUDZsH89urlXS4FTNi8kgQ8uLv"
+
+//Wi-Fi settings
+#define WIFI_SSID "P4nd0r424601"
+#define WIFI_PASSWORD "YHgq9mxd9R8-EAS$"
 
 // Set these to run example.
-#define FIREBASE_HOST "example.firebaseio.com"
-#define FIREBASE_AUTH "token_or_secret"
-#define WIFI_SSID "SSID"
-#define WIFI_PASSWORD "PASSWORD"
 
 const int grovePowerPin = 15;
 const int vibratorPin = 5;
@@ -36,14 +38,9 @@ const int fanPin = 13;
 void setup() {
   Serial.begin(9600);
 
-  pinMode(grovePowerPin, OUTPUT);
-  digitalWrite(grovePowerPin, HIGH);
 
-  pinMode(vibratorPin, OUTPUT);
+  pinMode(relePin, OUTPUT);
   pinMode(lightSensorPin, INPUT);
-  pinMode(ledPin, OUTPUT);
-  pinMode(buttonPin, INPUT);
-  pinMode(fanPin, OUTPUT);
 
   // connect to wifi.
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
@@ -57,26 +54,19 @@ void setup() {
   Serial.println(WiFi.localIP());
 
   Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
-  Firebase.set("pushbutton", 0);
-  Firebase.set("sunlight", 0);
-  Firebase.set("redlight", 0);
-  Firebase.set("cooldown", 0);
-  Firebase.set("brrr", 0);
+  Firebase.set("rele01", 0);
 }
 
-int button = 0;
 float light = 0.0;
 
 void loop() {
-  digitalWrite(ledPin, Firebase.getInt("redlight"));
-  digitalWrite(fanPin, Firebase.getInt("cooldown"));
-  digitalWrite(vibratorPin, Firebase.getInt("brrr"));
-  int newButton = digitalRead(buttonPin);
-  if (newButton != button) {
-    button = newButton;
-    Firebase.setInt("pushbutton", button);
-  }
+  delay(1000);
+  digitalWrite(relePin, Firebase.getInt("rele01"));
+  
   float newLight = analogRead(lightSensorPin);
+  if(){
+
+  }
   if (abs(newLight - light) > 100) {
     light = newLight;
     Firebase.setFloat("sunlight", light);
