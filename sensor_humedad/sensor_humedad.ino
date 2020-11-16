@@ -41,6 +41,7 @@ void setup()
     Serial.println(WiFi.localIP());
 
     Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
+    Firebase.set("servo01", 0);
     Serial.begin(9600);
     dht.begin();
 }
