@@ -36,7 +36,8 @@ export default function App() {
     value={temperatura}
      onValueChange={(value) => firebase.database().ref("servo01").set({value})}
   />
-    <Text>slider: {temperatura}</Text>
+    <Text>slider con valor de temperatura para probar: {temperatura}</Text>
+    <Text>Temperatura: {temperatura}</Text>
       </View>
   );
 };
