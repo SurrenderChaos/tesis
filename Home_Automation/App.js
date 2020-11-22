@@ -3,8 +3,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { AppRegistry, StyleSheet, View, Text } from "react-native";
+import Slider from '@react-native-community/slider';
 import firebase from './database/firebase'
+
 
 export default function App() {
   // Define the state of the component
@@ -21,11 +23,21 @@ export default function App() {
   }, []);
 
   return (
-    <div className="litreDisplay">
-      <div className="displayValue">
-        <span>{temperatura}c</span>
-      </div>
-    </div>
+
+      <View style={styles.container}>
+         <Slider
+    style={{width: 200, height: 40}}
+    minimumValue={0}
+    maximumValue={30}
+    minimumTrackTintColor="#FFFF00"
+    maximumTrackTintColor="#00FF00"
+ //   value={this.state.value}
+//    onValueChange= {() => firebase.database().ref("servo01").set(value)}
+    value={temperatura}
+     onValueChange={(value) => firebase.database().ref("servo01").set({value})}
+  />
+    <Text>slider: {temperatura}</Text>
+      </View>
   );
 };
 
