@@ -1,5 +1,5 @@
 import firebase from "firebase"
-import "firebase/database"
+//import "firebase/database"
 var firebaseConfig = {
     apiKey: "AIzaSyCuwE2wHaJxt29pFiOYD6FVlTLNECz1sxc",
     authDomain: "homeautomation-cfe46.firebaseapp.com",
