@@ -28,7 +28,8 @@ export default function App() {
          <Slider
     style={{width: 200, height: 40}}
     minimumValue={0}
-    maximumValue={30}
+    maximumValue={180}
+    step={10}
     minimumTrackTintColor="#FFFF00"
     maximumTrackTintColor="#00FF00"
  //   value={this.state.value}
