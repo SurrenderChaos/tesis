@@ -10,17 +10,35 @@ import firebase from './database/firebase'
 
 export default function App() {
   // Define the state of the component
-  const [temperatura, setTemperatura] = useState(0);
+const [servo, setServo] = useState(0);
+  useEffect(() => {
+    const getValue = firebase.database().ref("dato01");
+    getValue.on("value", snapshot => {
+      let value = snapshot.val();
+      setServo(value);
+    });
+        
 
+
+  }, []);
+
+  const [temperatura, setTemperatura] = useState(0);
   // Listen to changes on the firebase database, specifically the "distance" entry
   useEffect(() => {
     const getValue = firebase.database().ref("temperatura01");
+    //al parecer existe diferencia en los datos del firebase por lo que se debe cambiar de datos si da un error con este codigo
     getValue.on("value", snapshot => {
-      let value = snapshot.val();
       // Whenever the value changes on the server, it is also reset on the running app through the variable
+      let value = snapshot.val();
       setTemperatura(value);
     });
+        
+
+
   }, []);
+
+  
+
 
   return (
 
@@ -34,11 +52,11 @@ export default function App() {
     maximumTrackTintColor="#00FF00"
  //   value={this.state.value}
 //    onValueChange= {() => firebase.database().ref("servo01").set(value)}
-    value={temperatura}
-     onValueChange={(value) => firebase.database().ref("servo01").set({value})}
+    value={servo}
+     onValueChange={(servo) => firebase.database().ref("dato01").set(servo)}
   />
-    <Text>slider con valor de temperatura para probar: {temperatura}</Text>
-    <Text>Temperatura: {temperatura}</Text>
+    <Text>slider :   {servo} </Text>
+  <Text>Temperatura: {temperatura}  </Text>
       </View>
   );
 };
