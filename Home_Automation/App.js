@@ -18,7 +18,7 @@ export default function App() {
     getValue.on("value", snapshot => {
       let value = snapshot.val();
       // Whenever the value changes on the server, it is also reset on the running app through the variable
-      setTemperatura(value.toFixed(2));
+      setTemperatura(value);
     });
   }, []);
 
