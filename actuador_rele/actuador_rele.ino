@@ -37,7 +37,8 @@ void loop() {
   
   int sensorValue = analogRead(A0);
   float voltage = sensorValue * (5.0 / 1024.0);
-  
+  Firebase.setFloat("sensor_luz", voltage);
+
   int modoRele = Firebase.getInt("modo_rele");
   
   if (modoRele == 1)
@@ -52,7 +53,12 @@ void loop() {
   }
   else
   {
-    digitalWrite(relePin, Firebase.getInt("estado_rele_manual"));
+    if(Firebase.getBool("estado_rele_manual")){
+      digitalWrite(relePin, 1);
+    }else {
+
+      digitalWrite(relePin, 0);
+    }
   }
   Serial.println(voltage);
 
