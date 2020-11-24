@@ -55,7 +55,7 @@ void loop() {
     }
     
   }else {
-    myservo.write(Firebase.getInt("servo01"));
+    myservo.write(Firebase.getInt("dato01"));
   }
   
  
