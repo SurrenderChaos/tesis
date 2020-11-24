@@ -5,6 +5,7 @@
     "name": "Home_Automation",
     "slug": "Home_Automation",
     "version": "1.0.0",
+    "backgroundColor": "#4a83b5",
     "assetBundlePatterns": [
       "**/*"
     ]
