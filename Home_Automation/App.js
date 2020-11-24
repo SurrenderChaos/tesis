@@ -7,6 +7,38 @@ import React, { useState, useEffect } from 'react';
 import { AppRegistry, StyleSheet, View, Text, processColor  } from "react-native";
 import Slider from '@react-native-community/slider';
 import firebase from './database/firebase';
+import { BarChart, Grid } from 'react-native-svg-charts'
+
+
+function Temper(){
+  const [temperatura, setTemperatura] = useState(0);
+  // Listen to changes on the firebase database, specifically the "distance" entry
+  useEffect(() => {
+    const getValue = firebase.database().ref("temperatura01");
+    //al parecer existe diferencia en los datos del firebase por lo que se debe cambiar de datos si da un error con este codigo
+    getValue.on("value", snapshot => {
+      // Whenever the value changes on the server, it is also reset on the running app through the variable
+      let value = snapshot.val();
+      setTemperatura(value);
+    });
+
+  }, []);
+  return temperatura;        
+}
+class BarChartExample extends React.PureComponent {
+
+  
+    render() {
+        const fill = 'rgb(134, 65, 244)'
+        const data = [1,Temper(),1]
+
+        return (
+            <BarChart style={{ height: 200 }} data={data} svg={{ fill }} contentInset={{ top: 50, bottom: 30 }}>
+                <Grid />
+            </BarChart>
+        )
+    }
+}
 
  
 function HomeScreen() {
@@ -33,11 +65,10 @@ function Sensores(){
         
 
   }, []);
-
+const a = new BarChartExample();
   return (
-   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>sensorl: {temperatura}</Text>
-    </View> 
+    a.render()
+    
    );
 }
 
