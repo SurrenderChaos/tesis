@@ -9,6 +9,7 @@ import Slider from '@react-native-community/slider';
 import firebase from './database/firebase';
 import { BarChart, Grid, XAxis, YAxis } from 'react-native-svg-charts';
 import SensoresTest from './sensores';
+import ActuadoresTest from './actuadores';
 
 function Temper(){
   const [temperatura, setTemperatura] = useState(0);
@@ -107,7 +108,7 @@ const a = new BarChartExample();
 function Actuadores() {
   const [servo, setServo] = useState(0);
   useEffect(() => {
-    const getValue = firebase.database().ref("dato01");
+    const getValue = firebase.database().ref("angulo_servo");
     getValue.on("value", snapshot => {
       let value = snapshot.val();
       setServo(value);
@@ -132,7 +133,7 @@ function Actuadores() {
          //   value={this.state.value}
          //    onValueChange= {() => firebase.database().ref("servo01").set(value)}
           value={servo}
-          onValueChange={(servo) => firebase.database().ref("dato01").set(servo)}
+          onValueChange={(servo) => firebase.database().ref("angulo_servo").set(servo)}
         />
         <View> 
 
@@ -211,6 +212,7 @@ const Tab = createBottomTabNavigator();
         <Tab.Screen name="Actuadores" component={Actuadores} />
         <Tab.Screen name="MoverServo" component={MoverServo} />
         <Tab.Screen name="SensorTest" component={SensoresTest} />
+        <Tab.Screen name="ActuadoresTest" component={ActuadoresTest} />
 
       </Tab.Navigator>
     </NavigationContainer>

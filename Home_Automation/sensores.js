@@ -73,7 +73,7 @@ class BarChartExample2 extends React.PureComponent {
   
     render() {
         const fill = 'rgb(134, 65, 244)'
-        const data = [19,LuzSensor(),17]
+        const data = [1,LuzSensor(),0.5]
          const contentInset = { top: 100, bottom: 100 }
 
 
@@ -97,6 +97,8 @@ class BarChartExample2 extends React.PureComponent {
 }
 const a = new BarChartExample();
 const b = new BarChartExample2();
+
+
 
 
 
