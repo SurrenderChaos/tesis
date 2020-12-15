@@ -7,7 +7,8 @@ import React, { useState, useEffect } from 'react';
 import { AppRegistry, StyleSheet, View, Text, processColor, Button, Switch  } from "react-native";
 import Slider from '@react-native-community/slider';
 import firebase from './database/firebase';
-import { BarChart, Grid, XAxis, YAxis } from 'react-native-svg-charts'
+import { BarChart, Grid, XAxis, YAxis } from 'react-native-svg-charts';
+import SensoresTest from './sensores';
 
 function Temper(){
   const [temperatura, setTemperatura] = useState(0);
@@ -44,7 +45,7 @@ class BarChartExample extends React.PureComponent {
   
     render() {
         const fill = 'rgb(134, 65, 244)'
-        const data = [3,Temper(),2]
+        const data = [1,Temper(),1]
          const contentInset = { top: 100, bottom: 100 }
 
 
@@ -149,8 +150,12 @@ function MoverServo(){
   return(
     <View style={styles.container}>
       <Button
-        title="Rele01"
-        onPress={() => { firebase.database().ref("estado_rele_manual").set(1);  }}
+        title="Automatico"
+        onPress={() => { firebase.database().ref("modo_rele").set(1);  }}
+      />
+      <Button
+        title="Manual"
+        onPress={() => { firebase.database().ref("modo_rele").set(0);  }}
       />
        <Switch
         trackColor={{ false: "#767577", true: "#81b0ff" }}
@@ -205,6 +210,7 @@ const Tab = createBottomTabNavigator();
         <Tab.Screen name="Sensores" component={Sensores} />
         <Tab.Screen name="Actuadores" component={Actuadores} />
         <Tab.Screen name="MoverServo" component={MoverServo} />
+        <Tab.Screen name="SensorTest" component={SensoresTest} />
 
       </Tab.Navigator>
     </NavigationContainer>
