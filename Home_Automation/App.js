@@ -4,21 +4,24 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { AppRegistry, StyleSheet, View, Text, processColor, Button, Switch  } from "react-native";
+import { AppRegistry, StyleSheet, View, Text, processColor, Button, Switch, ActivityIndicator  } from "react-native";
 import Slider from '@react-native-community/slider';
 import firebase from './database/firebase';
 import { BarChart, Grid, XAxis, YAxis } from 'react-native-svg-charts';
 import SensoresTest from './sensores';
 import ActuadoresTest from './actuadores';
+import PerfilTest from './perfilRele';
+import PerfilTest2 from './perfilServo';
+import { Image } from 'react-native-elements';
 
 function Temper(){
   const [temperatura, setTemperatura] = useState(0);
-  // Listen to changes on the firebase database, specifically the "distance" entry
+  // Escucha los cambios en Firebase de la temperatura
   useEffect(() => {
     const getValue = firebase.database().ref("temperatura01");
     //al parecer existe diferencia en los datos del firebase por lo que se debe cambiar de datos si da un error con este codigo
     getValue.on("value", snapshot => {
-      // Whenever the value changes on the server, it is also reset on the running app through the variable
+      // cuando los valores de la temperatura cambian en Firebase tambien se setean en la aplicacion a traves de la variable
       let value = snapshot.val();
       setTemperatura(value);
     });
@@ -26,6 +29,9 @@ function Temper(){
   }, []);
   return temperatura;        
 }
+
+
+
 function LuzSensor(){
   const [luz, setLuz] = useState(0);
   // Listen to changes on the firebase database, specifically the "distance" entry
@@ -41,13 +47,16 @@ function LuzSensor(){
   }, []);
   return temperatura;        
 }
+
+
+
 class BarChartExample extends React.PureComponent {
 
   
     render() {
         const fill = 'rgb(134, 65, 244)'
         const data = [1,Temper(),1]
-         const contentInset = { top: 100, bottom: 100 }
+        const contentInset = { top: 100, bottom: 100 }
 
 
         return (
@@ -70,17 +79,18 @@ class BarChartExample extends React.PureComponent {
     }
 }
 
-
- 
 function HomeScreen() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Home!</Text>
+      <Text>Home Automation</Text>
+      <Image
+        source={{ uri:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlZ0DGdoiC3k6nZR6TGrf4CszyqUkMStyUdg&usqp=CAU'}}
+        style={{ width: 200, height: 200 }}
+      />
     </View>
   );
 }
 
- 
 
 function Sensores(){
   const [temperatura, setTemperatura] = useState(0);
@@ -101,7 +111,7 @@ const a = new BarChartExample();
     a.render()
 
     
-   );
+  );
 }
 
 
@@ -121,10 +131,9 @@ function Actuadores() {
     
     <View style={styles.container}>
               <Text>{servo} grados </Text>
-       
 
-         <Slider
-           style={{width: 200, height: 40}}
+        <Slider
+          style={{width: 200, height: 40}}
           minimumValue={0}
           maximumValue={180}
           step={10}
@@ -138,7 +147,6 @@ function Actuadores() {
         <View> 
 
         </View>
-         
     </View>
   );
 }
@@ -158,7 +166,7 @@ function MoverServo(){
         title="Manual"
         onPress={() => { firebase.database().ref("modo_rele").set(0);  }}
       />
-       <Switch
+      <Switch
         trackColor={{ false: "#767577", true: "#81b0ff" }}
         thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
         ios_backgroundColor="#3e3e3e"
@@ -172,7 +180,7 @@ function MoverServo(){
 }
 const Tab = createBottomTabNavigator();
 
- export default function App() {
+export default function App() {
   // Define the state of the component
 /*const [servo, setServo] = useState(0);
   useEffect(() => {
@@ -202,17 +210,16 @@ const Tab = createBottomTabNavigator();
   }, []);*/
 
   
-
+//se borraron los tabs: Actuadores, MoverServo y Sensores
 
   return (
-     <NavigationContainer>
+    <NavigationContainer>
       <Tab.Navigator>
         <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Sensores" component={Sensores} />
-        <Tab.Screen name="Actuadores" component={Actuadores} />
-        <Tab.Screen name="MoverServo" component={MoverServo} />
-        <Tab.Screen name="SensorTest" component={SensoresTest} />
-        <Tab.Screen name="ActuadoresTest" component={ActuadoresTest} />
+        <Tab.Screen name="Sensor" component={SensoresTest} />
+        <Tab.Screen name="Actuadores" component={ActuadoresTest} />
+        <Tab.Screen name="PerfilRele" component={PerfilTest} />
+        <Tab.Screen name="PerfilServo" component={PerfilTest2} />
 
       </Tab.Navigator>
     </NavigationContainer>

@@ -9,12 +9,14 @@ import * as d3 from 'd3';
 
 function MoverRele(){
   const [isEnabled, setIsEnabled] = useState(false);
-//  const relb = false;
+  //  const relb = false;
   const toggleSwitch = () => {setIsEnabled(isEnabled => !isEnabled); firebase.database().ref("estado_rele_manual").set(isEnabled)};
 
   return(
     <View >
-      <Button
+      <View style={{flexDirection:'row', alignItems:'baseline'}}>
+      <Button 
+        //cambiar la variable modo rele a boolean
         title="Automatico"
         onPress={() => { firebase.database().ref("modo_rele").set(1);  }}
       />
@@ -22,7 +24,11 @@ function MoverRele(){
         title="Manual"
         onPress={() => { firebase.database().ref("modo_rele").set(0);  }}
       />
-       <Switch
+
+      </View>
+      
+      <View >
+        <Switch
         trackColor={{ false: "#767577", true: "#81b0ff" }}
         thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
         ios_backgroundColor="#3e3e3e"
@@ -30,7 +36,11 @@ function MoverRele(){
         value={isEnabled}
       />
 
+      </View>
+       
+
     </View>
+
 
   );
 }
@@ -74,8 +84,6 @@ function MoverServo() {
 }
 
 const ActuadoresTest= () => {
-
-
     return (
       <View style={{
         flex: 1,
@@ -106,24 +114,17 @@ const ActuadoresTest= () => {
           </View>
           <View style={{flex:0.5,flexDirection:'row',  alignSelf: 'center'}}>
               {MoverServo()}
-
-              
-          
-          
           </View>
         </View>
         
         <View style={{flex:3,width: 380, height: 100, backgroundColor: 'steelblue'}}>
-         <Text style={{flex:0.5,alignSelf:'center', color:'white'}}>
+          <Text style={{flex:0.5,alignSelf:'center', color:'white'}}>
             Rele 
           </Text>
           <View style={{flex:1, flexDirection:'row', background:'#a503fc', justifyContent: 'center'}}>
               {MoverRele()}
-            
           </View>
           <View style={{flex:1,flexDirection:'row', alignSelf: 'center'}}>
-          
-          
           </View>
         </View>
         

@@ -114,18 +114,18 @@ const SensoresTest= () => {
         flexDirection: 'column',
         justifyContent: 'space-evenly',
       }}>
-        <View style={{flex:0.5,width: 380, height: 100, backgroundColor: 'powderblue', justifyContent: 'center'}}>
-        <Text style={{alignSelf:'center'}}>
+        <View style={{flex:0.5,width: 380, height: 100, backgroundColor: '#8E7DBE', justifyContent: 'center'}}>
+        <Text style={{alignSelf:'center',color:'white'}}>
         SENSORES
         </Text>
         </View>
-        <View style={{flex:3, width: 380, height: 100, backgroundColor: 'skyblue'}}>
+        <View style={{flex:3, width: 380, height: 100, backgroundColor: '#99C1B9'}}>
           <Text style={{flex:1,alignSelf:'center'}}>
           TEMPERATURA
           </Text>
-          <View style={{flex:1, flexDirection:'row', background:'#a503fc', justifyContent: 'flex-evenly'}}>
+          <View style={{flex:1, flexDirection:'row', background:'#F1E3D3', justifyContent: 'flex-evenly'}}>
             <Text style={{flex:2,alignSelf:'center', alignSelf:'center'}}>
-                Sensor Temper: {Temper()} grados
+                Temperatura: {Temper()} grados
             </Text>
             <Button
                 
@@ -147,19 +147,19 @@ const SensoresTest= () => {
           </View>
         </View>
         
-        <View style={{flex:3,width: 380, height: 100, backgroundColor: 'steelblue'}}>
-         <Text style={{flex:1,alignSelf:'center', color:'white'}}>
+        <View style={{flex:3,width: 380, height: 100, backgroundColor: '#8E7DBE'}}>
+          <Text style={{flex:1,alignSelf:'center', color:'white'}}>
           LUZ
           </Text>
-          <View style={{flex:1, flexDirection:'row', background:'#a503fc', justifyContent: 'space-between'}}>
+          <View style={{flex:1, flexDirection:'row', background:'#99C1B9', justifyContent: 'space-between'}}>
             <Text style={{flex:1,alignSelf:'center',color:'white'}}>
                 Sensor Luz: {LuzSensor()}
             </Text>
             <Button
                     title="Automatico"
                     onPress={() => { firebase.database().ref("modo_rele").set(1);  }}
-                />
-                <Button
+            />
+            <Button
                     title="Manual"
                     onPress={() => { firebase.database().ref("modo_rele").set(0);  }}
             />
