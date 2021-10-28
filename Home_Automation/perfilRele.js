@@ -1,4 +1,4 @@
-import { View, Text,  Switch} from 'react-native';
+import { View, Text,  Switch, Platform} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 //import {Picker} from '@react-native-picker/picker';
 import Slider from '@react-native-community/slider';
@@ -60,6 +60,30 @@ const PerfilTest= () => {
     const [isEnabled, setIsEnabled] = useState(false);
     const estadoReleHorario= () => {setIsEnabled(isEnabled => !isEnabled); firebase.database().ref("estado_rele_horario").set(isEnabled)};
 
+    const [date, setDate] = useState(new Date(1598051730000));
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
+
+  const showTimepicker = () => {
+    showMode('time');
+  };
+
+     
     useEffect(() => {
     const getValueHora = firebase.database().ref("hora");
     const getValueMinutos= firebase.database().ref("minutos");
@@ -106,9 +130,9 @@ const PerfilTest= () => {
             </Text>
             <Text style={{alignSelf:'center', flex:0.5}}>
             </Text>
-                                    
             
           </View>
+          
           <View style={{flex:0.5,flexDirection:'row',  alignSelf: 'center'}}>
               
             <Button
@@ -141,6 +165,24 @@ const PerfilTest= () => {
           
           </View>
         </View>
+        <View>
+      <View>
+        <Button onPress={showDatepicker} title="Show date picker!" />
+      </View>
+      <View>
+        <Button onPress={showTimepicker} title="Show time picker!" />
+      </View>
+      {show && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={mode}
+          is24Hour={true}
+          display="default"
+          onChange={onChange}
+        />
+      )}
+    </View>
         
       </View>
     );
