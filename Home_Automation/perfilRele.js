@@ -162,17 +162,11 @@ const PerfilTest= () => {
             />
           
           <View style={{flex:2,flexDirection:'row', alignSelf: 'center'}}>
-          
-          
-          </View>
-        </View>
-        <View>
-      <View>
-        <Button onPress={showDatepicker} title="Show date picker!" />
-      </View>
-      <View>
+            <View>
+      
+      <View >
         <Button onPress={showTimepicker} title="Show time picker!" />
-      </View>
+      </View >
       {show && (
         <DateTimePicker
           testID="dateTimePicker"
@@ -184,6 +178,11 @@ const PerfilTest= () => {
         />
       )}
     </View>
+          
+          
+          </View>
+        </View>
+        
         
       </View>
     );

@@ -12,6 +12,7 @@ import SensoresTest from './sensores';
 import ActuadoresTest from './actuadores';
 import PerfilTest from './perfilRele';
 import PerfilTest2 from './perfilServo';
+import AlignContentLayout from './demoLayout01';
 import { Image } from 'react-native-elements';
 
 function Temper(){
@@ -220,6 +221,7 @@ export default function App() {
         <Tab.Screen name="Actuadores" component={ActuadoresTest} />
         <Tab.Screen name="PerfilRele" component={PerfilTest} />
         <Tab.Screen name="PerfilServo" component={PerfilTest2} />
+        <Tab.Screen name="Demo Layout" component={AlignContentLayout} />
 
       </Tab.Navigator>
     </NavigationContainer>
