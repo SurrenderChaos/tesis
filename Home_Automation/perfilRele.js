@@ -9,6 +9,7 @@ import firebase from './database/firebase';
 import { BarChart, Grid, XAxis, YAxis } from 'react-native-svg-charts';
 import * as d3 from 'd3';
 import { render } from 'react-dom';
+//comentario de prueba
 
 class RelojMinutos extends React.Component{
     /*state = {
