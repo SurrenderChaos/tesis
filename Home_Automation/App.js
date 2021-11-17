@@ -217,7 +217,6 @@ export default function App() {
     <NavigationContainer>
       <Tab.Navigator>
         <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Sensor" component={SensoresTest} />
         <Tab.Screen name="Actuadores" component={ActuadoresTest} />
         <Tab.Screen name="PerfilRele" component={PerfilTest} />
         <Tab.Screen name="PerfilServo" component={PerfilTest2} />
