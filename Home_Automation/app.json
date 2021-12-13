@@ -6,6 +6,10 @@
     "slug": "Home_Automation",
     "version": "1.0.0",
     "backgroundColor": "#4a83b5",
+    "splash": {
+      "image": "./splashScreen2.png",
+      "resizeMode": "cover"
+    },
     "assetBundlePatterns": [
       "**/*"
     ]
