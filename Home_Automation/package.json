@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.12.5",
+    "@react-native-community/datetimepicker": "3.5.2",
     "@react-native-community/masked-view": "0.1.10",
     "@react-native-community/slider": "4.1.7",
     "@react-navigation/bottom-tabs": "^5.11.2",
@@ -41,8 +42,7 @@
     "react-native-unimodules": "~0.15.0",
     "react-native-viewport-units": "0.0.5",
     "react-native-web": "0.17.1",
-    "victory-native": "^35.3.1",
-    "@react-native-community/datetimepicker": "3.5.2"
+    "victory-native": "^35.5.5"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
