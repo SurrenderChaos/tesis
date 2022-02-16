@@ -9,6 +9,7 @@ import Slider from '@react-native-community/slider';
 import firebase from './database/firebase';
 import { BarChart, Grid, XAxis, YAxis } from 'react-native-svg-charts';
 import SensoresTest from './sensores';
+import SensoresFinal from './sensoresFinal';
 import ActuadoresTest from './actuadores';
 import PerfilTest from './perfilRele';
 import PerfilTest2 from './perfilServo';
@@ -218,6 +219,8 @@ export default function App() {
       <Tab.Navigator>
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Actuadores" component={ActuadoresTest} />
+        <Tab.Screen name="Sensores" component={SensoresTest} />
+        <Tab.Screen name="SensoresFinal" component={SensoresFinal} />
         <Tab.Screen name="PerfilRele" component={PerfilTest} />
         <Tab.Screen name="PerfilServo" component={PerfilTest2} />
         <Tab.Screen name="Demo Layout" component={AlignContentLayout} />
