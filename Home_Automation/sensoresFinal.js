@@ -5,10 +5,26 @@ import React, { useState, useEffect, Component } from 'react';
 import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase from './database/firebase';
-import { StackedAreaChart, BarChart,LineChart, Grid, XAxis, YAxis } from 'react-native-svg-charts';
+import {ProgressCircle,  StackedAreaChart, BarChart,LineChart, Grid, XAxis, YAxis } from 'react-native-svg-charts';
 import { Circle, Path } from 'react-native-svg'
 
 import * as shape from 'd3-shape';
+
+
+function MoverServo() {
+  const [servo, setServo] = useState(0);
+  useEffect(() => {
+    const getValue = firebase.database().ref("angulo_servo");
+    getValue.on("value", snapshot => {
+      let value = snapshot.val();
+      setServo(value);
+    });
+        
+
+
+  }, []);
+  return servo;
+}
 
 function Temper(){
   const [temperatura, setTemperatura] = useState(0);
@@ -30,6 +46,7 @@ function Temper(){
 }
 function LuzSensor(){
   const [luz, setLuz] = useState(0);
+  const [medicionLuz, setMedicionLuz] = useState([]);
   // Listen to changes on the firebase database, specifically the "distance" entry
   useEffect(() => {
     const getValue = firebase.database().ref("sensor_luz");
@@ -37,11 +54,11 @@ function LuzSensor(){
     getValue.on("value", snapshot => {
       // Whenever the value changes on the server, it is also reset on the running app through the variable
       let value = snapshot.val();
-      setLuz(value);
+      setMedicionLuz(medicionLuz => medicionLuz.concat(value));
     });
 
   }, []);
-  return luz;        
+  return medicionLuz;        
 }
 /*class LineChartExample extends React.PureComponent {
     render() {
@@ -66,58 +83,48 @@ class BarChartExample2 extends React.PureComponent {
   
     render() {
         const fill = 'rgb(134, 65, 244)'
-        const data01 = [19,Temper(),17]
         const data02 = [1,LuzSensor(),0.5]
-        const pos00 = Temper[2]
         const contentInset = { top: 20, bottom: 20 }
+        const ultimaPos = Temper().slice(-1)
+        const ultimaPosLuz = LuzSensor().slice(-1)
         
-
-
-
-        
-
 
         return (
             <View>
-                <View>
-            
-            <BarChart style={{ height: 90 }} data={Temper()} svg={{ fill }} contentInset={{ top: 10, bottom: 10 }} spacing={0.2} gridMin={0}>
-                <Grid direction={Grid.Direction.HORIZONTAL} />
-            </BarChart>
-            <XAxis
-                    style={{ marginHorizontal: -10 }}
-                    data={Temper()}
-                    //formatLabel={(value, index) => index}
-                    contentInset={{ left: 100, right: 100 }}
-                    //svg={{ fontSize: 30, fill: 'black' }}
+              <View style={{padding:25, height: 200, flexDirection: 'row' }}>
+                <YAxis
+                    data={LuzSensor()}
+                    contentInset={contentInset}
+                    svg={{
+                        fill: 'grey',
+                        fontSize: 15,
+                    }}
+                    numberOfTicks={5}
+                    formatLabel={(value) => `${value}L`}
                 />
-                        <Text>Temperatura: {Temper()}</Text>
-                </View>
-                <View>
-            
-            <BarChart style={{ height: 90 }} data={data02} svg={{ fill }} contentInset={{ top: 10, bottom: 10 }} spacing={0.2} gridMin={0}>
-                <Grid direction={Grid.Direction.HORIZONTAL} />
-            </BarChart>
-            <XAxis
-                    style={{ marginHorizontal: -10 }}
-                    data={data02}
-                    //formatLabel={(value, index) => index}
-                    contentInset={{ left: 100, right: 100 }}
-                    //svg={{ fontSize: 30, fill: 'black' }}
-                />
-                        <Text>Luz: {LuzSensor()}</Text>
-                </View>
+                <LineChart
+                    style={{ flex: 1, marginLeft: 16 }}
+                    data={LuzSensor()}
+                    svg={{ stroke: 'rgb(134, 65, 244)' }}
+                    contentInset={contentInset}
+                >
+                    <Grid />
+                </LineChart>
+            </View>
+            <Text>Luz: {ultimaPosLuz}</Text>
+                
+                
                 <View>
                 
-            <View style={{ height: 200, flexDirection: 'row' }}>
+            <View style={{padding:25, height: 200, flexDirection: 'row' }}>
                 <YAxis
                     data={Temper()}
                     contentInset={contentInset}
                     svg={{
                         fill: 'grey',
-                        fontSize: 10,
+                        fontSize: 15,
                     }}
-                    numberOfTicks={10}
+                    numberOfTicks={5}
                     formatLabel={(value) => `${value}ºC`}
                 />
                 <LineChart
@@ -130,10 +137,19 @@ class BarChartExample2 extends React.PureComponent {
                 </LineChart>
             </View>
         
-                <Text>Temperatura: {Temper()}</Text>
+                <Text>Temperatura: {ultimaPos}</Text>
 
 
             
+                </View>
+                <View>
+                  <ProgressCircle
+                style={ { height: 200 } }
+                progress={ 0.7 }
+                progressColor={'rgb(134, 65, 244)'}
+                startAngle={0}
+                endAngle={(Math.PI/180) * MoverServo()}
+            />
                 </View>
 
             </View>
@@ -152,4 +168,5 @@ const SensoresFinal= () => {
     );
     
 };
+
 export default SensoresFinal;
